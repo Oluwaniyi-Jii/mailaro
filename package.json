@@ -2,6 +2,9 @@
   "name": "mailaro",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "dev": "node apps/web/health.js"
+  },
   "workspaces": [
     "apps/*",
     "packages/*"
