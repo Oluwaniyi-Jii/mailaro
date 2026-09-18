@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "npm run dev --workspace=apps/web",
-    "test": "node --test",
-    "check": "npm run test"
+    "test": "node test/schema.test.js",
+    "lint": "npm run lint --workspace=apps/web",
+    "check": "npm run lint && npm run test"
   },
   "workspaces": [
     "apps/*",

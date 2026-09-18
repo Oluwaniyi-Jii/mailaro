@@ -19,6 +19,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   gmailConnection GmailConnection?
+  trackedEmails TrackedEmail[]
 }
 
 model Account {
@@ -61,4 +62,93 @@ model GmailConnection {
   updatedAt    DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trackedEmails TrackedEmail[]
+}
+
+enum TrackingEventType {
+  open
+  click
+}
+
+enum TrackingState {
+  tracked
+  untracked
+  disabled
+}
+
+model TrackedEmail {
+  id                String        @id @default(cuid())
+  userId            String
+  gmailConnectionId String
+  subject           String?
+  gmailMessageId    String
+  gmailThreadId     String?
+  senderEmail       String
+  sentAt            DateTime
+  trackingState     TrackingState @default(tracked)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gmailConnection   GmailConnection   @relation(fields: [gmailConnectionId], references: [id], onDelete: Cascade)
+  recipients        TrackedRecipient[]
+  links             TrackedLink[]
+  events            TrackingEvent[]
+
+  @@unique([gmailConnectionId, gmailMessageId])
+  @@index([userId, sentAt])
+}
+
+model TrackedRecipient {
+  id             String   @id @default(cuid())
+  trackedEmailId String
+  emailAddress   String
+  displayName    String?
+  tokenHash      String   @unique
+  createdAt      DateTime @default(now())
+
+  trackedEmail   TrackedEmail    @relation(fields: [trackedEmailId], references: [id], onDelete: Cascade)
+  links          TrackedLink[]
+  events         TrackingEvent[]
+
+  @@index([trackedEmailId, emailAddress])
+}
+
+model TrackedLink {
+  id                 String   @id @default(cuid())
+  trackedEmailId     String
+  trackedRecipientId String
+  originalUrl        String   @db.Text
+  label              String?
+  position           Int
+  tokenHash          String   @unique
+  createdAt          DateTime @default(now())
+
+  trackedEmail       TrackedEmail     @relation(fields: [trackedEmailId], references: [id], onDelete: Cascade)
+  trackedRecipient   TrackedRecipient @relation(fields: [trackedRecipientId], references: [id], onDelete: Cascade)
+  events             TrackingEvent[]
+
+  @@index([trackedEmailId, position])
+  @@index([trackedRecipientId])
+}
+
+model TrackingEvent {
+  id                 String            @id @default(cuid())
+  eventId            String            @unique
+  type               TrackingEventType
+  trackedEmailId     String
+  trackedRecipientId String
+  trackedLinkId      String?
+  occurredAt         DateTime          @default(now())
+  userAgent          String?           @db.Text
+  source             String?
+  createdAt          DateTime          @default(now())
+
+  trackedEmail       TrackedEmail     @relation(fields: [trackedEmailId], references: [id], onDelete: Cascade)
+  trackedRecipient   TrackedRecipient @relation(fields: [trackedRecipientId], references: [id], onDelete: Cascade)
+  trackedLink        TrackedLink?     @relation(fields: [trackedLinkId], references: [id], onDelete: SetNull)
+
+  @@index([trackedEmailId, occurredAt])
+  @@index([trackedRecipientId, occurredAt])
+  @@index([type, occurredAt])
 }

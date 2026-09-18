@@ -1,9 +1,15 @@
 import { NextResponse } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { decryptToken } from "@/lib/token-crypto";
 import { prisma } from "@mailaro/db";
 
-export async function GET(request: Request) {
+type GmailHeader = {
+  name: string;
+  value: string;
+};
+
+export async function GET() {
   if (process.env.NODE_ENV !== "development") {
     return NextResponse.json({ error: "development only" }, { status: 403 });
   }
@@ -23,7 +29,11 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "no gmail connection" }, { status: 400 });
   }
 
-  const { accessToken } = user.gmailConnection;
+  const accessToken = decryptToken(user.gmailConnection.accessToken);
+
+  if (!accessToken) {
+    return NextResponse.json({ error: "no gmail access token" }, { status: 400 });
+  }
 
   // Fetch the latest message ID
   const listResponse = await fetch("https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=1", {
@@ -53,9 +63,9 @@ export async function GET(request: Request) {
   const msgData = await msgResponse.json();
   
   // Normalize response
-  const headers = msgData.payload?.headers || [];
-  const subject = headers.find((h: any) => h.name.toLowerCase() === "subject")?.value || "No Subject";
-  const from = headers.find((h: any) => h.name.toLowerCase() === "from")?.value || "Unknown Sender";
+  const headers: GmailHeader[] = msgData.payload?.headers || [];
+  const subject = headers.find((header) => header.name.toLowerCase() === "subject")?.value || "No Subject";
+  const from = headers.find((header) => header.name.toLowerCase() === "from")?.value || "Unknown Sender";
   
   const normalizedMessage = {
     id: msgData.id,
