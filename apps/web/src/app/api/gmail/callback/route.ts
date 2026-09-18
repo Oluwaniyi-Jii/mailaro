@@ -1,4 +1,4 @@
-import { NextResponse } from "next/navigation";
+import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -67,6 +67,10 @@ export async function GET(request: Request) {
   });
 
   if (!profileResponse.ok) {
+    console.error("Gmail profile request failed", {
+      status: profileResponse.status,
+      body: await profileResponse.text(),
+    });
     return NextResponse.redirect(new URL("/dashboard?error=gmail_profile_failed", request.url));
   }
 
