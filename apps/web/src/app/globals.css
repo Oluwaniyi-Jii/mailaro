@@ -2,25 +2,29 @@
 
 @theme {
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --color-brand-50: #ecfdf8;
+  --color-brand-100: #d1faef;
+  --color-brand-500: #167f73;
+  --color-brand-600: #0f6f66;
+  --color-brand-700: #0e5d56;
+  --color-brand-800: #114b47;
+  --color-brand-900: #0b332f;
 }
 
 @layer utilities {
-  .glass-panel {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl;
+  .app-shell {
+    @apply min-h-screen bg-slate-50 text-slate-950;
   }
-  
-  .glow-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400;
+
+  .surface-panel {
+    @apply rounded-lg border border-slate-200 bg-white shadow-sm;
   }
-  
-  .glow-bg {
-    @apply absolute -z-10 rounded-full blur-[100px] opacity-30 mix-blend-screen;
+
+  .brand-mark {
+    @apply flex items-center justify-center rounded-lg bg-brand-700 text-white shadow-sm;
   }
 }
 
 body {
-  background-color: #050508;
-  background-image: 
-    radial-gradient(circle at 15% 50%, rgba(79, 70, 229, 0.15), transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15), transparent 25%);
+  background: #f8fafc;
 }

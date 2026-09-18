@@ -4,7 +4,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@mailaro/db";
 
 export const authOptions: NextAuthOptions = {
-  // @ts-ignore - PrismaAdapter types mismatch slightly in some next-auth versions, but works fine
+  // @ts-expect-error - PrismaAdapter types mismatch slightly in some next-auth versions, but works fine
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
