@@ -25,6 +25,22 @@ export default async function DashboardPage() {
             Sign out
           </a>
         </div>
+
+        <div className="mt-8 pt-8 border-t border-gray-100">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Email Integration</h2>
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h3 className="font-medium text-gray-900 mb-2">Connect your Gmail</h3>
+            <p className="text-gray-500 text-sm mb-4">
+              To send tracked emails, Mailaro needs permission to send emails on your behalf and read metadata for replies.
+            </p>
+            <a
+              href="/api/gmail/connect"
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md font-medium text-sm hover:bg-blue-700 transition-colors"
+            >
+              Connect Gmail
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );
