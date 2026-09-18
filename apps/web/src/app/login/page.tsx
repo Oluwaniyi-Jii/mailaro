@@ -1,19 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 import { LogIn, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
 
 export default function LoginPage() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = async () => {
     setStatus("loading");
-    // Simulated sign-in for this commit's UI
-    setTimeout(() => {
-      // We will hook this up to NextAuth in the next step
-      setStatus("success");
-    }, 1000);
+    try {
+      await signIn("google", { callbackUrl: "/dashboard" });
+    } catch (error) {
+      setStatus("error");
+      setErrorMessage("Failed to initialize Google Sign In.");
+    }
   };
 
   return (
