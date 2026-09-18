@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "npm run dev --workspace=apps/web",
+    "db:generate": "prisma generate --schema=packages/db/prisma/schema.prisma",
+    "db:push": "prisma db push --schema=packages/db/prisma/schema.prisma",
     "test": "node test/schema.test.js",
     "lint": "npm run lint --workspace=apps/web",
     "check": "npm run lint && npm run test"
@@ -11,5 +13,9 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.116.0"
+  }
 }

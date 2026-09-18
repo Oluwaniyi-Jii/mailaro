@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Sora } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
+const sora = Sora({
   subsets: ["latin"],
-  variable: "--font-outfit",
+  variable: "--font-sora",
 });
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${outfit.variable} font-sans antialiased bg-slate-50 text-slate-950 selection:bg-brand-100 selection:text-brand-900`}
+        className={`${sora.variable} font-sans antialiased bg-slate-50 text-slate-950 selection:bg-brand-100 selection:text-brand-900`}
       >
         {children}
       </body>

@@ -38,7 +38,7 @@ export default async function DashboardPage() {
             </div>
             <Link
               href="/api/auth/signout"
-              className="rounded-lg border border-slate-200 bg-white p-2 text-slate-500 shadow-sm transition-colors hover:border-slate-300 hover:text-slate-900"
+              className="border border-slate-200 bg-white p-2 text-slate-500 shadow-sm transition-colors hover:border-slate-300 hover:text-slate-900"
               title="Sign out"
             >
               <LogOut className="h-5 w-5" />
@@ -49,7 +49,7 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <section className={`surface-panel p-8 ${isConnected ? "border-brand-200" : ""}`}>
             <div
-              className={`mb-6 flex h-12 w-12 items-center justify-center rounded-lg border ${
+              className={`mb-6 flex h-12 w-12 items-center justify-center border ${
                 isConnected
                   ? "border-brand-200 bg-brand-50 text-brand-700"
                   : "border-amber-200 bg-amber-50 text-amber-700"
@@ -76,7 +76,7 @@ export default async function DashboardPage() {
 
                 <a
                   href="/api/gmail/disconnect"
-                  className="inline-flex items-center justify-center rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition-colors hover:bg-red-100"
+                  className="inline-flex items-center justify-center border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition-colors hover:bg-red-100"
                 >
                   Disconnect Account
                 </a>
@@ -96,7 +96,7 @@ export default async function DashboardPage() {
 
                 <a
                   href="/api/gmail/connect"
-                  className="inline-flex w-full items-center justify-center rounded-lg bg-brand-700 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-800"
+                  className="inline-flex w-full items-center justify-center bg-brand-700 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-800"
                 >
                   Authenticate with Google Workspace
                 </a>
