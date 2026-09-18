@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "node apps/web/health.js",
+    "dev": "npm run dev --workspace=apps/web",
     "test": "node --test",
     "check": "npm run test"
   },
