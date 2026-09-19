@@ -274,23 +274,30 @@ The recommended implementation order is:
 6. **Harden the extension**: replace brittle selectors with tested fixtures, support multiple compose windows, expose useful error states, and add a proper build/check pipeline.
 7. **Prepare production**: configure rate limits, monitoring, token rotation, data deletion, deployment environments, OAuth verification, and privacy documentation.
 
+### Roadmap status
+
+| Area | Status | What it means |
+| --- | --- | --- |
+| Google sign-in and Gmail OAuth | Complete | Users can authenticate, connect Gmail, refresh tokens, and disconnect the account. |
+| Gmail compose integration | Prototype | The extension detects compose windows and exposes tracking controls. |
+| Tracked sending | Prototype | The separate **Send tracked** action sends per-recipient MIME messages with open pixels. |
+| Open tracking | Prototype | The pixel endpoint validates hashed tokens and records open events. |
+| Send reliability | Next | Add partial-send reconciliation, provider error records, request IDs, and safe retries. |
+| Click tracking | Next | Rewrite safe links, redirect through Mailaro, and record click events. |
+| Activity dashboard | Next | Add message history, recipient status, summaries, and event timelines. |
+| Notifications | Planned | Add first-open and first-click notifications through an asynchronous worker when needed. |
+| Production hardening | Planned | Add rate limiting, monitoring, retention/deletion controls, OAuth verification, and deployment configuration. |
+
 ```mermaid
-gantt
-    title Mailaro delivery path
-    dateFormat  YYYY-MM-DD
-    axisFormat  %b %d
-    section Foundation
-    Auth and Gmail connection       :done, auth, 2026-01-01, 20d
-    Compose and tracked send        :done, send, after auth, 25d
-    Open event endpoint             :active, open, after send, 15d
-    section Product
-    Reliable send reconciliation    :reliability, after open, 15d
-    Click tracking                  :clicks, after reliability, 25d
-    Activity dashboard              :dashboard, after clicks, 20d
-    Notifications                   :notifications, after dashboard, 20d
-    section Operations
-    Extension test/build pipeline   :extension, after send, 25d
-    Production hardening            :hardening, after notifications, 30d
+flowchart LR
+    A[Auth and Gmail OAuth] --> B[Gmail compose integration]
+    B --> C[Tracked sending]
+    C --> D[Open tracking]
+    D --> E[Send reliability]
+    E --> F[Click tracking]
+    F --> G[Activity dashboard]
+    G --> H[Notifications]
+    H --> I[Production hardening]
 ```
 
 For the original system boundaries and release decisions, see [docs/architecture.md](docs/architecture.md), [docs/release_boundaries.md](docs/release_boundaries.md), and [docs/technology_stack.md](docs/technology_stack.md). The extension-specific behavior is documented in [apps/extension/README.md](apps/extension/README.md).
